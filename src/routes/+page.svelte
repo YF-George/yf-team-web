@@ -9,7 +9,7 @@
 			kicker: '01 / LEADERSHIP',
 			title: '掠奪狂熱',
 			description:
-				''
+				'待定'
 		},
 		{
 			kicker: '02 / OPERATIONS',
@@ -19,9 +19,9 @@
 		},
 		{
 			kicker: '03 / CULTURE',
-			title: '待定',
+			title: 'jerry lin',
 			description:
-				''
+				'這裡不只是伺服器，是一群人留下痕跡的地方。'
 		}
 	];
 
