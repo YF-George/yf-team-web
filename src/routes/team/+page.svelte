@@ -1,3 +1,7 @@
+<script lang="ts">
+	const teamMembers: Array<{ order: number; name: string; discord: string; joinedAt: string; tags: string }> = [];
+</script>
+
 <section class="px-4 pb-14 pt-6 md:pb-22 md:pt-10">
 	<div class="mx-auto w-full max-w-7xl space-y-8 md:space-y-12">
 		<div class="relative isolate overflow-hidden rounded-[2.4rem] border border-white/35 bg-[linear-gradient(132deg,color-mix(in_oklab,var(--background)_93%,transparent),color-mix(in_oklab,var(--primary)_9%,var(--background)))] px-6 py-8 shadow-[0_30px_90px_-52px_color-mix(in_oklab,var(--foreground)_68%,transparent)] md:px-10 md:py-12">
@@ -62,27 +66,36 @@
 
 		<section class="rounded-3xl border bg-background/68 p-6 md:p-7">
 			<div class="flex items-end justify-between gap-4">
-				<h2 class="[font-family:var(--font-display)] text-2xl font-bold tracking-tight md:text-3xl">管理成員</h2>
-				<p class="text-foreground/72 text-xs tracking-[0.16em] uppercase">Member Cards</p>
+				<h2 class="[font-family:var(--font-display)] text-2xl font-bold tracking-tight md:text-3xl">成員名單 (1-9)</h2>
+				<p class="text-foreground/72 text-xs tracking-[0.16em] uppercase">Team Members</p>
 			</div>
 
-			<div class="mt-6 grid gap-4 md:grid-cols-3">
-				<article class="rounded-2xl border bg-background/80 p-4">
-					<div class="h-28 rounded-xl border border-dashed bg-background/86"></div>
-					<div class="mt-4 h-4 w-28 rounded bg-foreground/15"></div>
-					<div class="mt-2 h-3 w-20 rounded bg-foreground/12"></div>
-				</article>
-				<article class="rounded-2xl border bg-background/80 p-4">
-					<div class="h-28 rounded-xl border border-dashed bg-background/86"></div>
-					<div class="mt-4 h-4 w-28 rounded bg-foreground/15"></div>
-					<div class="mt-2 h-3 w-20 rounded bg-foreground/12"></div>
-				</article>
-				<article class="rounded-2xl border bg-background/80 p-4">
-					<div class="h-28 rounded-xl border border-dashed bg-background/86"></div>
-					<div class="mt-4 h-4 w-28 rounded bg-foreground/15"></div>
-					<div class="mt-2 h-3 w-20 rounded bg-foreground/12"></div>
-				</article>
-			</div>
+			{#if teamMembers.length === 0}
+				<div class="mt-6 rounded-2xl border border-dashed bg-background/78 px-5 py-10 text-center">
+					<p class="text-foreground/72 text-sm">目前管理團隊名單已清空，稍後更新。</p>
+				</div>
+			{:else}
+				<div class="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+					{#each teamMembers as member (member.order)}
+						<article class="rounded-2xl border bg-background/80 p-4">
+							<div class="flex items-start justify-between gap-3">
+								<div>
+									<p class="text-primary text-xs font-semibold tracking-[0.18em] uppercase">#{member.order}</p>
+									<h3 class="mt-2 text-base font-semibold">{member.name}</h3>
+									<p class="text-foreground/76 mt-1 text-xs">@{member.discord}</p>
+								</div>
+								<p class="text-foreground/70 text-xs">{member.joinedAt}</p>
+							</div>
+
+							<div class="mt-4 flex flex-wrap gap-2">
+								{#each member.tags.split(';') as tag (`${member.order}-${tag}`)}
+									<span class="rounded-full border bg-background/88 px-2.5 py-1 text-[11px] text-foreground/84">{tag}</span>
+								{/each}
+							</div>
+						</article>
+					{/each}
+				</div>
+			{/if}
 		</section>
 	</div>
 </section>

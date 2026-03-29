@@ -1,85 +1,22 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-
-	const slides = [
-		{ id: 1, alt: '精采回顧圖片 1' },
-		{ id: 2, alt: '精采回顧圖片 2' },
-		{ id: 3, alt: '精采回顧圖片 3' },
-		{ id: 4, alt: '精采回顧圖片 4' }
+	const guidelineSections = [
+		{
+			title: '社群行為準則',
+			items: ['尊重彼此，不人身攻擊', '禁止歧視、騷擾與仇恨言論', '討論以建設性回饋為原則']
+		},
+		{
+			title: '活動參與規範',
+			items: ['活動報名後請準時出席', '若無法參加請提前告知', '遵守活動流程與幹部指引']
+		},
+		{
+			title: '投稿與內容規範',
+			items: ['投稿內容需為原創或註明來源', '不得散佈不實資訊與侵權素材', '標題與內容需符合主題與事實']
+		},
+		{
+			title: '違規處理機制',
+			items: ['初次違規：提醒與溝通', '重複違規：暫停權限', '重大違規：移除社群資格']
+		}
 	];
-
-	let currentIndex = $state(0);
-	let isAutoplayRunning = $state(false);
-
-	type AutoplayOptions = {
-		delay: number;
-		stopOnInteraction: boolean;
-	};
-
-	const Autoplay = ({ delay, stopOnInteraction }: AutoplayOptions) => {
-		let timerId: ReturnType<typeof setInterval> | null = null;
-
-		const start = (onTick: () => void) => {
-			if (timerId) return;
-			timerId = setInterval(onTick, delay);
-			isAutoplayRunning = true;
-		};
-
-		const stop = () => {
-			if (!timerId) return;
-			clearInterval(timerId);
-			timerId = null;
-			isAutoplayRunning = false;
-		};
-
-		const reset = (onTick: () => void) => {
-			stop();
-			start(onTick);
-		};
-
-		return {
-			stopOnInteraction,
-			start,
-			stop,
-			reset
-		};
-	};
-
-	const plugin = Autoplay({ delay: 2000, stopOnInteraction: true });
-
-	const tick = () => {
-		currentIndex = (currentIndex + 1) % slides.length;
-	};
-
-	const goTo = (index: number) => {
-		currentIndex = (index + slides.length) % slides.length;
-		if (plugin.stopOnInteraction) {
-			plugin.stop();
-		} else {
-			plugin.reset(tick);
-		}
-	};
-
-	const prev = () => goTo(currentIndex - 1);
-	const next = () => goTo(currentIndex + 1);
-
-	const pauseAutoplay = () => {
-		plugin.stop();
-	};
-
-	const resumeAutoplay = () => {
-		if (!plugin.stopOnInteraction) {
-			plugin.start(tick);
-		}
-	};
-
-	onMount(() => {
-		plugin.start(tick);
-
-		return () => {
-			plugin.stop();
-		};
-	});
 </script>
 
 <section class="px-4 pb-12 pt-6 md:pb-20 md:pt-10">
@@ -89,95 +26,28 @@
 			<div class="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,color-mix(in_oklab,var(--foreground)_5%,transparent)_1px,transparent_1px),linear-gradient(to_bottom,color-mix(in_oklab,var(--foreground)_5%,transparent)_1px,transparent_1px)] bg-size-[32px_32px] opacity-55"></div>
 
 			<div class="relative space-y-6 md:space-y-8">
-				<p class="text-foreground/80 text-xs font-semibold tracking-[0.3em] uppercase">Highlights Archive</p>
-				<h1 class="[font-family:var(--font-display)] text-4xl leading-tight font-bold tracking-tight md:text-6xl">精彩回顧</h1>
+				<p class="text-foreground/80 text-xs font-semibold tracking-[0.3em] uppercase">Community Guidelines</p>
+				<h1 class="[font-family:var(--font-display)] text-4xl leading-tight font-bold tracking-tight md:text-6xl">規範</h1>
 				<p class="text-foreground/82 max-w-3xl text-base leading-relaxed md:text-lg">
-					這裡預留給活動照片、紀錄與故事。現在先保留版面，等你準備好內容後再放上去。
+					本頁提供 YF_Team 社群與活動的共同規範，請所有成員與參與者在交流與參與前先閱讀，維持安全、尊重、有效的合作環境。
 				</p>
 			</div>
 		</div>
 
-		<div class="relative overflow-hidden rounded-[2rem] border bg-[linear-gradient(160deg,color-mix(in_oklab,var(--background)_88%,transparent),color-mix(in_oklab,var(--primary)_10%,var(--background)))] p-5 shadow-[0_24px_70px_-50px_color-mix(in_oklab,var(--foreground)_72%,transparent)] md:p-8">
-			<div class="pointer-events-none absolute -right-10 -top-10 h-36 w-36 rounded-full bg-primary/16 blur-3xl"></div>
-			<div class="pointer-events-none absolute -bottom-8 -left-8 h-28 w-28 rounded-full bg-foreground/10 blur-3xl"></div>
-
-			<div class="mb-5 flex items-center justify-between gap-3 md:mb-7">
-				<div class="flex items-center gap-3">
-					<p class="text-foreground/80 text-xs font-semibold tracking-[0.3em] uppercase">Image Carousel</p>
-					<span class={`rounded-full px-2.5 py-1 text-[10px] font-semibold tracking-[0.18em] uppercase ${isAutoplayRunning ? 'bg-primary/20 text-primary' : 'bg-foreground/12 text-foreground/70'}`}>
-						{isAutoplayRunning ? 'Playing' : 'Paused'}
-					</span>
-				</div>
-				<div class="flex items-center gap-2">
-					<button
-						type="button"
-						onclick={prev}
-						class="hover:bg-muted/70 inline-flex h-9 w-9 items-center justify-center rounded-full border bg-background/85 text-sm transition"
-						aria-label="上一張"
-					>
-						←
-					</button>
-					<button
-						type="button"
-						onclick={next}
-						class="hover:bg-muted/70 inline-flex h-9 w-9 items-center justify-center rounded-full border bg-background/85 text-sm transition"
-						aria-label="下一張"
-					>
-						→
-					</button>
-				</div>
-			</div>
-
-			<div
-				class="overflow-hidden rounded-3xl border bg-background/60"
-				onmouseenter={pauseAutoplay}
-				onmouseleave={resumeAutoplay}
-				role="region"
-				aria-label="精采回顧輪播"
-			>
-				<div
-					class="flex transition-transform duration-500 ease-out"
-					style={`transform: translateX(-${currentIndex * 100}%);`}
-				>
-					{#each slides as slide (slide.id)}
-						<article class="min-w-full p-4 md:p-6">
-							<div class="group relative overflow-hidden rounded-2xl border">
-								<img
-									src="/bg-main-layout.webp"
-									alt={slide.alt}
-									class="h-64 w-full object-cover dark:hidden md:h-112"
-								/>
-								<img
-									src="/bg-second-layout.webp"
-									alt={slide.alt}
-									class="hidden h-64 w-full object-cover dark:block md:h-112"
-								/>
-								<div class="pointer-events-none absolute inset-0 bg-linear-to-t from-black/35 via-transparent to-transparent opacity-70"></div>
-								<div class="absolute left-4 top-4 rounded-full border border-white/45 bg-black/20 px-3 py-1 text-[10px] tracking-[0.18em] text-white/90 uppercase backdrop-blur-sm">YF Highlights</div>
-							</div>
-							<div class="mt-4 grid gap-3 md:grid-cols-[180px_minmax(0,1fr)]">
-								<div class="h-14 rounded-2xl border border-dashed bg-background/78"></div>
-								<div class="h-14 rounded-2xl border border-dashed bg-background/78"></div>
-							</div>
-						</article>
-					{/each}
-				</div>
-			</div>
-
-			<div class="mt-5 flex justify-center gap-2">
-				{#each slides as slide, index (slide.id)}
-					<button
-						type="button"
-						onclick={() => goTo(index)}
-						class={`h-2.5 rounded-full transition-all ${
-							index === currentIndex
-								? 'bg-primary w-8'
-								: 'bg-foreground/25 hover:bg-foreground/40 w-2.5'
-						}`}
-						aria-label={`切換到第 ${index + 1} 張`}
-					></button>
-				{/each}
-			</div>
+		<div class="grid gap-4 md:grid-cols-2 md:gap-6">
+			{#each guidelineSections as section}
+				<article class="rounded-3xl border bg-[linear-gradient(165deg,color-mix(in_oklab,var(--background)_90%,transparent),color-mix(in_oklab,var(--primary)_8%,var(--background)))] p-6 shadow-[0_20px_55px_-44px_color-mix(in_oklab,var(--foreground)_74%,transparent)]">
+					<h2 class="[font-family:var(--font-display)] text-2xl font-semibold tracking-tight">{section.title}</h2>
+					<ul class="mt-4 space-y-2 text-sm leading-relaxed text-foreground/86 md:text-base">
+						{#each section.items as item}
+							<li class="flex gap-2">
+								<span class="text-primary mt-[0.1rem]">•</span>
+								<span>{item}</span>
+							</li>
+						{/each}
+					</ul>
+				</article>
+			{/each}
 		</div>
 	</div>
 </section>

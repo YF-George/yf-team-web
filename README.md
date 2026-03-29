@@ -40,3 +40,29 @@ npm run build
 You can preview the production build with `npm run preview`.
 
 > To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+
+## Cloudflare Pages Deployment
+
+This project targets Cloudflare Pages (not a standalone Worker).
+
+Use these commands locally:
+
+```sh
+pnpm run build
+pnpm run deploy
+```
+
+The `deploy` script is:
+
+```sh
+wrangler pages deploy .svelte-kit/cloudflare --project-name yf-team-web
+```
+
+If your Cloudflare build logs show `Executing user deploy command: npx wrangler deploy`,
+your project is using the wrong deploy command. Update your Cloudflare Pages build settings:
+
+- Build command: `pnpm run build`
+- Deploy command: `pnpm run deploy`
+
+Do not use `npx wrangler deploy` for this project, because it is for Workers and will fail
+with missing entry-point/assets errors.

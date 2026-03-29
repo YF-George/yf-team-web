@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { page } from '$app/state';
+	import { navigating, page } from '$app/state';
 	import './layout.css';
 	import * as NavigationMenu from '$lib/components/ui/navigation-menu/index.js';
 	import { cn } from '$lib/utils.js';
@@ -18,7 +18,7 @@
 	const navItems: NavItem[] = [
 		{ title: '首頁', href: '/' },
 		{ title: '最新消息', href: '/news' },
-		{ title: '精彩回顧', href: '/highlights' },
+		{ title: '規範', href: '/highlights' },
 		{ title: '榮譽榜', href: '/hall-of-fame' },
 		{ title: '管理團隊', href: '/team' }
 	];
@@ -73,7 +73,6 @@
 				setter(target);
 			}
 		}, step);
-
 		return () => {
 			window.clearInterval(intervalId);
 			setter(target);
@@ -111,14 +110,19 @@
 <div class="app-bg pointer-events-none fixed inset-0 -z-10"></div>
 
 <header
-	class="bg-background/85 supports-backdrop-filter:bg-background/65 sticky top-0 z-40 border-b backdrop-blur-xl"
+	class="theme-transition bg-background/85 supports-backdrop-filter:bg-background/65 sticky top-0 z-40 border-b backdrop-blur-xl"
+	class:nav-switching={Boolean(navigating.to)}
 >
 	<div
 		class="from-primary/12 via-primary/3 to-primary/12 pointer-events-none absolute inset-x-0 top-0 h-0.75 bg-linear-to-r"
 	></div>
 	<div class="mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-4 py-3">
 		<a href="/" class="relative inline-flex items-center gap-2 text-base font-semibold tracking-tight">
-			<img src="/LOGO.svg" alt="YF_Team Logo" class="size-7" />
+			<span
+				class="inline-flex size-8 items-center justify-center rounded-xl bg-black/70 p-1 ring-1 ring-black/15 shadow-sm"
+			>
+				<img src="/LOGO.svg" alt="YF_Team Logo" class="size-full" />
+			</span>
 			<span
 				class="from-primary via-foreground to-primary [font-family:var(--font-display)] bg-linear-to-r bg-clip-text text-transparent"
 			>
@@ -130,7 +134,7 @@
 			<div class="no-scrollbar overflow-x-auto">
 				<NavigationMenu.Root viewport={isMobile.current}>
 					<NavigationMenu.List
-						class="bg-muted/35 ring-border/70 inline-flex flex-nowrap items-center gap-1 rounded-full p-1 ring-1 shadow-[0_10px_25px_-20px_color-mix(in_oklab,var(--foreground)_75%,transparent)]"
+						class="nav-list bg-muted/35 ring-border/70 inline-flex flex-nowrap items-center gap-1 rounded-xl p-1 ring-1 shadow-[0_10px_25px_-20px_color-mix(in_oklab,var(--foreground)_75%,transparent)]"
 					>
 						{#each navItems as item (item.href)}
 							<NavigationMenu.Item>
@@ -138,10 +142,10 @@
 									href={item.href}
 									class={cn(
 										navigationMenuTriggerStyle(),
-										'relative h-8 rounded-full px-3 text-xs font-medium md:text-sm',
+										'nav-link relative rounded-xl px-3 text-xs font-medium transition-all duration-300 ease-out md:text-sm',
 										isActive(item.href)
 											? 'bg-primary text-primary-foreground shadow-[0_0_0_1px_hsl(var(--background))_inset,0_10px_28px_-14px_hsl(var(--foreground))]'
-											: 'bg-transparent text-foreground/80 hover:text-foreground'
+											: 'bg-transparent text-foreground/80 hover:-translate-y-0.5 hover:text-foreground'
 									)}
 								>
 									{item.title}
@@ -155,7 +159,7 @@
 			<button
 				type="button"
 				onclick={toggleMode}
-				class="border-input bg-background/90 hover:bg-accent hover:text-accent-foreground relative inline-flex size-9 items-center justify-center rounded-full border transition-colors"
+				class="border-input bg-background/90 hover:bg-accent hover:text-accent-foreground relative inline-flex size-9 items-center justify-center rounded-xl border transition-colors"
 				aria-label="切換深淺色模式"
 				title="切換深淺色模式"
 			>
@@ -171,12 +175,12 @@
 	</div>
 </header>
 
-<main class="mx-auto w-full max-w-6xl px-4 py-8">
+<main class="theme-transition mx-auto w-full max-w-6xl px-4 py-8">
 	{@render children()}
 </main>
 
 <footer
-	class="border-input bg-background/50 supports-backdrop-filter:bg-background/30 relative border-t backdrop-blur-sm"
+	class="theme-transition border-input bg-background/50 supports-backdrop-filter:bg-background/30 relative border-t backdrop-blur-sm"
 >
 	<div
 		class="from-primary/8 via-primary/2 to-primary/8 pointer-events-none absolute inset-x-0 bottom-0 h-0.5 bg-linear-to-r"
@@ -213,7 +217,7 @@
 					</li>
 					<li>
 						<a href="/highlights" class="text-xs text-foreground/70 hover:text-foreground/90 transition-colors"
-							>精彩回顧</a
+							>規範</a
 						>
 					</li>
 				</ul>
@@ -294,15 +298,64 @@
 		background-size: cover;
 		background-position: center;
 		background-repeat: no-repeat;
+		filter: brightness(1) saturate(1);
+		opacity: 1;
+		transition:
+			filter 680ms cubic-bezier(0.22, 1, 0.36, 1),
+			opacity 680ms cubic-bezier(0.22, 1, 0.36, 1);
 	}
 
 	:global(.dark) .app-bg {
 		background-image:
 			linear-gradient(
 				to bottom,
-				color-mix(in oklab, var(--background) 24%, transparent),
-				color-mix(in oklab, var(--background) 80%, transparent)
+				color-mix(in oklab, var(--background) 10%, transparent),
+				color-mix(in oklab, var(--background) 36%, transparent)
 			),
 			url('/bg-second-layout.webp');
+		filter: brightness(0.88) saturate(1.06);
+		opacity: 0.96;
+	}
+
+	:global(.nav-switching .nav-list) {
+		animation: navListPulse 420ms cubic-bezier(0.22, 1, 0.36, 1);
+	}
+
+	:global(.nav-switching .nav-link) {
+		animation: navLinkNudge 360ms cubic-bezier(0.22, 1, 0.36, 1);
+	}
+
+	@keyframes navListPulse {
+		0% {
+			transform: scale(1);
+			filter: saturate(1);
+		}
+		40% {
+			transform: scale(1.015);
+			filter: saturate(1.08);
+		}
+		100% {
+			transform: scale(1);
+			filter: saturate(1);
+		}
+	}
+
+	@keyframes navLinkNudge {
+		0% {
+			transform: translateY(0);
+		}
+		45% {
+			transform: translateY(-1px);
+		}
+		100% {
+			transform: translateY(0);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		:global(.nav-switching .nav-list),
+		:global(.nav-switching .nav-link) {
+			animation: none !important;
+		}
 	}
 </style>

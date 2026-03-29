@@ -7,25 +7,25 @@
 	const stackCards = [
 		{
 			kicker: '01 / LEADERSHIP',
-			title: '總召留言：把每個人都放在心上',
+			title: '掠奪狂熱',
 			description:
-				'謝謝每位夥伴在忙碌中仍然願意投入。YF_Team 的價值，不是誰最耀眼，而是我們願不願意彼此成就、一起把路走穩。',
+				'',
 			cta: '查看管理團隊',
 			href: '/team'
 		},
 		{
 			kicker: '02 / OPERATIONS',
-			title: '副召留言：細節會說話，承諾要落地',
+			title: '喬治',
 			description:
-				'每一場活動、每一次協作，我們都在學習把流程做得更清楚、把分工做得更貼心。讓大家可以放心投入、安心發揮。',
+				'所謂家人，是那些看過你所有狼狽，卻依然願意為你遞上一盞燈的人。',
 			cta: '查看管理團隊',
 			href: '/team'
 		},
 		{
 			kicker: '03 / CULTURE',
-			title: '幹部留言：在這裡，我們一起變得更好',
+			title: '待定',
 			description:
-				'我們希望這裡不只是做事的地方，更是能被理解、被支持的地方。感謝你願意留下，也歡迎你一起把文化延續下去。',
+				'',
 			cta: '認識管理團隊',
 			href: '/team'
 		}
@@ -88,6 +88,38 @@
 		};
 	};
 
+	const revealOnScroll = (node: HTMLElement) => {
+		node.classList.remove('is-visible');
+
+		if (typeof window === 'undefined') {
+			node.classList.add('is-visible');
+			return {};
+		}
+
+		const delay = Number(node.dataset.delay ?? 0);
+		node.style.setProperty('--reveal-delay', `${Number.isFinite(delay) ? delay : 0}ms`);
+
+		const observer = new IntersectionObserver(
+			(entries) => {
+				for (const entry of entries) {
+					if (entry.isIntersecting) {
+						node.classList.add('is-visible');
+						observer.unobserve(node);
+					}
+				}
+			},
+			{ threshold: 0.18, rootMargin: '0px 0px -8% 0px' }
+		);
+
+		observer.observe(node);
+
+		return {
+			destroy() {
+				observer.disconnect();
+			}
+		};
+	};
+
 	onMount(() => {
 		const stop = runHeroScramble();
 		const handleViewportChange = () => {
@@ -107,25 +139,26 @@
 	});
 </script>
 
+<div class="home-anim">
 <section class="hero-top sticky top-0 z-0 isolate flex h-[calc(100dvh-7rem)] w-full items-center justify-center px-4">
 	<div class="pointer-events-none absolute inset-0 opacity-70" style={`opacity: ${0.7 * getHeroOpacity()};`}>
-		<div class="absolute -top-24 left-1/2 h-64 w-64 -translate-x-1/2 rounded-full bg-primary/20 blur-3xl"></div>
-		<div class="absolute inset-0 bg-[linear-gradient(to_right,color-mix(in_oklab,var(--foreground)_8%,transparent)_1px,transparent_1px),linear-gradient(to_bottom,color-mix(in_oklab,var(--foreground)_8%,transparent)_1px,transparent_1px)] bg-size-[38px_38px] mask-[radial-gradient(circle_at_center,black,transparent_78%)]"></div>
+		<div class="float-slow absolute -top-24 left-1/2 h-64 w-64 -translate-x-1/2 rounded-full bg-primary/20 blur-3xl"></div>
+		<div class="pulse-grid absolute inset-0 bg-[linear-gradient(to_right,color-mix(in_oklab,var(--foreground)_8%,transparent)_1px,transparent_1px),linear-gradient(to_bottom,color-mix(in_oklab,var(--foreground)_8%,transparent)_1px,transparent_1px)] bg-size-[38px_38px] mask-[radial-gradient(circle_at_center,black,transparent_78%)]"></div>
 	</div>
 
-	<div class="relative text-center" style={`opacity: ${getHeroOpacity()};`}>
-		<p class="text-foreground/78 text-[10px] font-semibold tracking-[0.36em] uppercase md:text-xs">YOUTH FORGE COLLECTIVE</p>
+	<div class="hero-enter relative text-center" style={`opacity: ${getHeroOpacity()};`}>
+		<p class="text-foreground/78 text-[10px] font-semibold tracking-[0.36em] uppercase md:text-xs" style="--text-delay: 60ms;">YOUTH FORGE COLLECTIVE</p>
 		<h1 class="mt-4 [font-family:var(--font-display)] text-6xl leading-none font-bold tracking-[-0.03em] md:text-8xl lg:text-9xl">
 			<span class="text-foreground">{heroBrandText.slice(0, 2)}</span><span class="text-primary">{heroBrandText.slice(2, 3)}</span><span class="text-foreground">{heroBrandText.slice(3)}</span>
 		</h1>
-		<p class="text-foreground/70 mt-5 text-sm tracking-[0.14em] uppercase md:text-base">Built by people, not by noise</p>
+		<p class="text-foreground/70 mt-5 text-sm tracking-[0.14em] uppercase md:text-base" style="--text-delay: 180ms;">Built by people, not by noise</p>
 	</div>
-	<p class="text-foreground/72 absolute bottom-8 text-[10px] tracking-[0.28em] uppercase md:text-xs" style={`opacity: ${getHeroOpacity()};`}>Scroll Down</p>
+	<p class="scroll-cue text-foreground/72 absolute bottom-8 text-[10px] tracking-[0.28em] uppercase md:text-xs" style={`opacity: ${getHeroOpacity()}; --text-delay: 280ms;`}>Scroll Down</p>
 </section>
 
 <section class="relative z-10 px-4 pb-14 pt-8 md:pb-24 md:pt-16">
 	<div class="mx-auto w-full max-w-7xl">
-		<article class="relative isolate overflow-hidden rounded-[2.75rem] border border-white/40 bg-[linear-gradient(140deg,color-mix(in_oklab,var(--background)_92%,transparent),color-mix(in_oklab,var(--primary)_6%,var(--background)))] px-7 py-10 shadow-[0_30px_90px_-46px_color-mix(in_oklab,var(--foreground)_65%,transparent)] backdrop-blur-sm md:px-14 md:py-16">
+		<article use:revealOnScroll data-delay="60" class="reveal-on-scroll relative isolate overflow-hidden rounded-[2.75rem] border border-white/40 bg-[linear-gradient(140deg,color-mix(in_oklab,var(--background)_92%,transparent),color-mix(in_oklab,var(--primary)_6%,var(--background)))] px-7 py-10 shadow-[0_30px_90px_-46px_color-mix(in_oklab,var(--foreground)_65%,transparent)] backdrop-blur-sm md:px-14 md:py-16">
 			<div class="pointer-events-none absolute inset-y-0 left-0 w-[40%] bg-linear-to-r from-primary/12 via-primary/5 to-transparent"></div>
 			<div class="pointer-events-none absolute -right-14 top-12 h-44 w-44 rounded-full bg-primary/10 blur-3xl"></div>
 			<div class="relative grid gap-10 md:grid-cols-[260px_minmax(0,1fr)] md:gap-16">
@@ -166,7 +199,9 @@
 <section class="relative z-10 px-4 pb-16 pt-2 md:pb-28 md:pt-6" bind:this={leadershipSectionEl}>
 	<div class="mx-auto w-full max-w-6xl">
 		<div
-			class="sticky top-20 z-50 mb-8 flex items-end justify-between gap-4 pt-3 transition-opacity duration-300 md:top-24 md:mb-10 md:pt-4"
+			use:revealOnScroll
+			data-delay="120"
+			class="reveal-on-scroll sticky top-20 z-50 mb-8 flex items-end justify-between gap-4 pt-3 transition-opacity duration-300 md:top-24 md:mb-10 md:pt-4"
 			style={`opacity: ${leadershipHeadingOpacity};`}
 		>
 			<div>
@@ -206,7 +241,7 @@
 
 <section class="relative z-10 px-4 pb-12 pt-2 md:pb-16 md:pt-6">
 	<div class="mx-auto w-full max-w-6xl">
-		<div class="relative overflow-hidden rounded-[2rem] border border-white/30 bg-background/68 p-5 shadow-[0_22px_70px_-45px_color-mix(in_oklab,var(--foreground)_70%,transparent)] backdrop-blur-sm md:p-7">
+		<div use:revealOnScroll data-delay="150" class="reveal-on-scroll relative overflow-hidden rounded-[2rem] border border-white/30 bg-background/68 p-5 shadow-[0_22px_70px_-45px_color-mix(in_oklab,var(--foreground)_70%,transparent)] backdrop-blur-sm md:p-7">
 			<div class="pointer-events-none absolute inset-x-0 top-0 h-24 bg-linear-to-b from-primary/10 to-transparent"></div>
 
 			<div class="relative flex flex-col gap-6 md:gap-8">
@@ -226,28 +261,28 @@
 							href="/highlights"
 							class="bg-background/80 hover:bg-muted inline-flex items-center rounded-full border px-4 py-2.5 text-sm font-semibold transition"
 						>
-							看精彩回顧
+							看規範
 						</a>
 					</div>
 				</div>
 
 				<div class="grid gap-4 md:grid-cols-6 md:grid-rows-2">
-					<a href="/news" class="group md:col-span-3 md:row-span-2 rounded-3xl border bg-background/72 p-6 transition hover:bg-background/90">
+					<a href="/news" use:revealOnScroll data-delay="220" class="reveal-on-scroll group md:col-span-3 md:row-span-2 rounded-3xl border bg-background/72 p-6 transition hover:bg-background/90">
 						<p class="text-primary text-xs font-semibold tracking-[0.15em]">LATEST</p>
 						<h2 class="mt-3 [font-family:var(--font-display)] text-2xl font-semibold md:text-3xl">最新消息</h2>
 						<p class="text-foreground/80 mt-3 max-w-sm text-sm leading-relaxed md:text-base">公告、制度更新、活動上線資訊一站掌握，第一時間知道社群正在發生什麼。</p>
 					</a>
-					<a href="/highlights" class="group md:col-span-3 rounded-3xl border bg-background/62 p-5 transition hover:bg-background/82">
+					<a href="/highlights" use:revealOnScroll data-delay="280" class="reveal-on-scroll group md:col-span-3 rounded-3xl border bg-background/62 p-5 transition hover:bg-background/82">
 						<p class="text-primary text-xs font-semibold tracking-[0.15em]">MOMENTS</p>
-						<h2 class="mt-2 [font-family:var(--font-display)] text-xl font-semibold">精彩回顧</h2>
-						<p class="text-foreground/80 mt-2 text-sm">用照片與紀錄，保存每次熱血與感動。</p>
+						<h2 class="mt-2 [font-family:var(--font-display)] text-xl font-semibold">規範</h2>
+						<p class="text-foreground/80 mt-2 text-sm">查看社群行為準則、活動參與與投稿規範。</p>
 					</a>
-					<a href="/hall-of-fame" class="group md:col-span-2 rounded-3xl border bg-background/62 p-5 transition hover:bg-background/82">
+					<a href="/hall-of-fame" use:revealOnScroll data-delay="340" class="reveal-on-scroll group md:col-span-2 rounded-3xl border bg-background/62 p-5 transition hover:bg-background/82">
 						<p class="text-primary text-xs font-semibold tracking-[0.15em]">CULTURE</p>
 						<h2 class="mt-2 [font-family:var(--font-display)] text-xl font-semibold">榮譽榜</h2>
 						<p class="text-foreground/80 mt-2 text-sm">看見努力的價值，讓文化被記住。</p>
 					</a>
-					<a href="/team" class="group md:col-span-1 rounded-3xl border bg-primary/13 p-5 transition hover:bg-primary/20">
+					<a href="/team" use:revealOnScroll data-delay="400" class="reveal-on-scroll group md:col-span-1 rounded-3xl border bg-primary/13 p-5 transition hover:bg-primary/20">
 						<p class="text-primary text-xs font-semibold tracking-[0.15em]">PEOPLE</p>
 						<h2 class="mt-2 [font-family:var(--font-display)] text-xl font-semibold">管理團隊</h2>
 					</a>
@@ -256,3 +291,136 @@
 		</div>
 	</div>
 </section>
+</div>
+
+<style>
+	.home-anim p {
+		--text-delay: 120ms;
+		animation: textLoadIn 720ms cubic-bezier(0.22, 1, 0.36, 1) both;
+		animation-delay: var(--text-delay);
+		will-change: transform, filter;
+	}
+
+	.home-anim :is(h2, h3, h4) {
+		--text-delay: 120ms;
+		animation:
+			textLoadIn 720ms cubic-bezier(0.22, 1, 0.36, 1) both,
+			headingGlow 5.4s ease-in-out infinite;
+		animation-delay:
+			var(--text-delay),
+			calc(var(--text-delay) + 700ms);
+		will-change: transform, filter, text-shadow;
+	}
+
+	.reveal-on-scroll {
+		--reveal-delay: 0ms;
+		opacity: 0;
+		transform: translateY(22px) scale(0.985);
+		filter: blur(6px);
+		transition:
+			opacity 680ms ease,
+			transform 680ms cubic-bezier(0.22, 1, 0.36, 1),
+			filter 680ms ease;
+		transition-delay: var(--reveal-delay);
+		will-change: opacity, transform, filter;
+	}
+
+	.reveal-on-scroll:global(.is-visible) {
+		opacity: 1;
+		transform: translateY(0) scale(1);
+		filter: blur(0);
+	}
+
+	.hero-enter {
+		animation: heroIntro 900ms cubic-bezier(0.22, 1, 0.36, 1) both;
+	}
+
+	.scroll-cue {
+		animation: cueBounce 1.8s ease-in-out infinite;
+	}
+
+	.float-slow {
+		animation: floatSlow 7s ease-in-out infinite;
+	}
+
+	.pulse-grid {
+		animation: pulseGrid 4.2s ease-in-out infinite;
+	}
+
+	@keyframes heroIntro {
+		from {
+			transform: translateY(24px) scale(0.98);
+		}
+		to {
+			transform: translateY(0) scale(1);
+		}
+	}
+
+	@keyframes cueBounce {
+		0%,
+		100% {
+			transform: translateY(0);
+		}
+		50% {
+			transform: translateY(8px);
+		}
+	}
+
+	@keyframes floatSlow {
+		0%,
+		100% {
+			transform: translate(-50%, 0px) scale(1);
+		}
+		50% {
+			transform: translate(-50%, 14px) scale(1.04);
+		}
+	}
+
+	@keyframes pulseGrid {
+		0%,
+		100% {
+			opacity: 0.55;
+		}
+		50% {
+			opacity: 0.78;
+		}
+	}
+
+	@keyframes textLoadIn {
+		from {
+			transform: translateY(14px);
+			filter: blur(7px);
+		}
+		to {
+			transform: translateY(0);
+			filter: blur(0);
+		}
+	}
+
+	@keyframes headingGlow {
+		0%,
+		100% {
+			text-shadow: 0 0 0 color-mix(in oklab, var(--primary) 0%, transparent);
+			transform: translateY(0);
+		}
+		50% {
+			text-shadow: 0 8px 28px color-mix(in oklab, var(--primary) 28%, transparent);
+			transform: translateY(-1px);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.home-anim :is(p, h2, h3, h4),
+		.reveal-on-scroll,
+		.hero-enter,
+		.scroll-cue,
+		.float-slow,
+		.pulse-grid {
+			animation: none !important;
+			transition: none !important;
+			transform: none !important;
+			opacity: 1 !important;
+			filter: none !important;
+		}
+	}
+</style>
