@@ -1,5 +1,9 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import BellIcon from '@lucide/svelte/icons/bell';
+	import ShieldIcon from '@lucide/svelte/icons/shield';
+	import TrophyIcon from '@lucide/svelte/icons/trophy';
+	import UsersIcon from '@lucide/svelte/icons/users';
 
 	const HERO_BRAND_TARGET = 'YF_Team';
 	const SCRAMBLE_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*';
@@ -9,7 +13,7 @@
 			kicker: '01 / LEADERSHIP',
 			title: '掠奪狂熱',
 			description:
-				'待定'
+				'我喜歡你'
 		},
 		{
 			kicker: '02 / OPERATIONS',
@@ -163,13 +167,13 @@
 	</div>
 
 	<div class="hero-enter relative text-center" style={`opacity: ${getHeroOpacity()};`}>
-		<p class="text-foreground/78 text-[9px] font-semibold tracking-[0.34em] uppercase md:text-xs" style="--text-delay: 60ms;">YOUTH FORGE COLLECTIVE</p>
+		<p class="text-foreground/85 text-[9px] font-semibold tracking-[0.34em] uppercase md:text-xs" style="--text-delay: 60ms;">YOUTH FORGE COLLECTIVE</p>
 		<h1 class="mt-4 [font-family:var(--font-display)] text-[clamp(2.45rem,14vw,5.6rem)] leading-none font-bold tracking-[-0.03em] md:text-8xl lg:text-9xl">
 			<span class="text-foreground">{heroBrandText.slice(0, 2)}</span><span class="text-primary">{heroBrandText.slice(2, 3)}</span><span class="text-foreground">{heroBrandText.slice(3)}</span>
 		</h1>
-		<p class="text-foreground/70 mt-5 text-xs tracking-[0.13em] uppercase md:text-base" style="--text-delay: 180ms;">Built by people, not by noise</p>
+		<p class="text-foreground/80 mt-5 text-xs tracking-[0.13em] uppercase md:text-base" style="--text-delay: 180ms;">Built by people, not by noise</p>
 	</div>
-	<p class="scroll-cue text-foreground/72 absolute bottom-8 text-[9px] tracking-[0.24em] uppercase md:text-xs" style={`opacity: ${getHeroOpacity()}; --text-delay: 280ms;`}>Scroll Down</p>
+	<p class="scroll-cue text-foreground/80 absolute bottom-8 text-[9px] tracking-[0.24em] uppercase md:text-xs" style={`opacity: ${getHeroOpacity()}; --text-delay: 280ms;`}>Scroll Down</p>
 </section>
 
 <section class="relative z-10 px-4 pb-14 pt-8 md:pb-24 md:pt-16">
@@ -258,14 +262,16 @@
 					<div class="flex flex-wrap gap-2">
 						<a
 							href="/news"
-							class="bg-primary text-primary-foreground hover:bg-primary/90 inline-flex items-center rounded-full px-3.5 py-2 text-xs font-semibold shadow-lg shadow-primary/20 transition md:px-4 md:py-2.5 md:text-sm"
+							class="bg-primary text-primary-foreground hover:bg-primary/90 inline-flex items-center rounded-full px-3.5 py-2 text-xs font-semibold shadow-lg shadow-primary/20 transition md:px-4 md:py-2.5 md:text-sm gap-2"
 						>
+							<BellIcon class="size-4" />
 							看最新消息
 						</a>
 						<a
 							href="/rules"
-							class="bg-background/80 hover:bg-muted inline-flex items-center rounded-full border px-3.5 py-2 text-xs font-semibold transition md:px-4 md:py-2.5 md:text-sm"
+							class="bg-background/80 hover:bg-muted inline-flex items-center rounded-full border px-3.5 py-2 text-xs font-semibold transition md:px-4 md:py-2.5 md:text-sm gap-2"
 						>
+							<ShieldIcon class="size-4" />
 							看規範
 						</a>
 					</div>
@@ -273,21 +279,33 @@
 
 				<div class="grid gap-4 md:grid-cols-6 md:grid-rows-2">
 					<a href="/news" use:revealOnScroll data-delay="220" class="reveal-on-scroll group md:col-span-3 md:row-span-2 rounded-3xl border bg-background/72 p-6 transition hover:bg-background/90">
+						<div class="inline-flex items-center justify-center size-10 rounded-xl bg-primary/15 mb-3">
+							<BellIcon class="size-5 text-primary" />
+						</div>
 						<p class="text-primary text-xs font-semibold tracking-[0.15em]">LATEST</p>
 						<h2 class="mt-3 [font-family:var(--font-display)] text-lg font-semibold md:text-3xl">最新消息</h2>
 						<p class="text-foreground/80 mt-3 max-w-sm text-xs leading-relaxed md:text-base">公告、制度更新、活動上線資訊一站掌握，第一時間知道社群正在發生什麼。</p>
 					</a>
 					<a href="/rules" use:revealOnScroll data-delay="280" class="reveal-on-scroll group md:col-span-3 rounded-3xl border bg-background/62 p-5 transition hover:bg-background/82">
+						<div class="inline-flex items-center justify-center size-9 rounded-lg bg-primary/15 mb-2.5">
+							<ShieldIcon class="size-4 text-primary" />
+						</div>
 						<p class="text-primary text-xs font-semibold tracking-[0.15em]">MOMENTS</p>
 						<h2 class="mt-2 [font-family:var(--font-display)] text-lg font-semibold md:text-xl">規範</h2>
 						<p class="text-foreground/80 mt-2 text-xs md:text-sm">查看社群行為準則、活動參與與投稿規範。</p>
 					</a>
 					<a href="/hall-of-fame" use:revealOnScroll data-delay="340" class="reveal-on-scroll group md:col-span-2 rounded-3xl border bg-background/62 p-5 transition hover:bg-background/82">
+						<div class="inline-flex items-center justify-center size-9 rounded-lg bg-primary/15 mb-2.5">
+							<TrophyIcon class="size-4 text-primary" />
+						</div>
 						<p class="text-primary text-xs font-semibold tracking-[0.15em]">CULTURE</p>
 						<h2 class="mt-2 [font-family:var(--font-display)] text-lg font-semibold md:text-xl">榮譽榜</h2>
 						<p class="text-foreground/80 mt-2 text-xs md:text-sm">看見努力的價值，讓文化被記住。</p>
 					</a>
 					<a href="/team" use:revealOnScroll data-delay="400" class="reveal-on-scroll group md:col-span-1 rounded-3xl border bg-primary/13 p-5 transition hover:bg-primary/20">
+						<div class="inline-flex items-center justify-center size-9 rounded-lg bg-primary/15 mb-2.5">
+							<UsersIcon class="size-4 text-primary" />
+						</div>
 						<p class="text-primary text-xs font-semibold tracking-[0.15em]">PEOPLE</p>
 						<h2 class="mt-2 [font-family:var(--font-display)] text-lg font-semibold md:text-xl">管理團隊</h2>
 					</a>

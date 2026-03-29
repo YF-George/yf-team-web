@@ -1,4 +1,8 @@
 <script lang="ts">
+	import CrownIcon from '@lucide/svelte/icons/crown';
+	import ZapIcon from '@lucide/svelte/icons/zap';
+	import HeartIcon from '@lucide/svelte/icons/heart';
+
 	const teamMembers: Array<{ order: number; name: string; discord: string; joinedAt: string; tags: string }> = [];
 </script>
 
@@ -25,20 +29,23 @@
 				</div>
 
 				<div class="mt-6 space-y-4">
-					<div class="rounded-2xl border bg-background/78 p-4 md:p-5">
-						<p class="text-primary text-xs font-semibold tracking-[0.2em] uppercase">Leadership</p>
+					<div class="rounded-2xl border bg-background/78 p-4 md:p-5">					<div class="inline-flex items-center justify-center size-8 rounded-lg bg-primary/15 mb-2">
+						<CrownIcon class="size-4 text-primary" />
+					</div>						<p class="text-primary text-xs font-semibold tracking-[0.2em] uppercase">Leadership</p>
 						<h3 class="mt-2 text-lg font-semibold">總管理層</h3>
 						<p class="text-foreground/80 mt-2 text-sm leading-relaxed">負責重大決策、制度方向與跨組協調，確保社群持續穩定運作。</p>
 					</div>
 
-					<div class="rounded-2xl border bg-background/78 p-4 md:p-5">
-						<p class="text-primary text-xs font-semibold tracking-[0.2em] uppercase">Operations</p>
+					<div class="rounded-2xl border bg-background/78 p-4 md:p-5">					<div class="inline-flex items-center justify-center size-8 rounded-lg bg-primary/15 mb-2">
+						<ZapIcon class="size-4 text-primary" />
+					</div>						<p class="text-primary text-xs font-semibold tracking-[0.2em] uppercase">Operations</p>
 						<h3 class="mt-2 text-lg font-semibold">營運與活動</h3>
 						<p class="text-foreground/80 mt-2 text-sm leading-relaxed">規劃活動與日常流程，維持節奏，讓每次參與都有清楚體驗。</p>
 					</div>
 
-					<div class="rounded-2xl border bg-background/78 p-4 md:p-5">
-						<p class="text-primary text-xs font-semibold tracking-[0.2em] uppercase">Community Care</p>
+					<div class="rounded-2xl border bg-background/78 p-4 md:p-5">					<div class="inline-flex items-center justify-center size-8 rounded-lg bg-primary/15 mb-2">
+						<HeartIcon class="size-4 text-primary" />
+					</div>						<p class="text-primary text-xs font-semibold tracking-[0.2em] uppercase">Community Care</p>
 						<h3 class="mt-2 text-lg font-semibold">社群陪伴與秩序</h3>
 						<p class="text-foreground/80 mt-2 text-sm leading-relaxed">回應成員需求、維持交流品質，守住社群舒服且安全的氛圍。</p>
 					</div>

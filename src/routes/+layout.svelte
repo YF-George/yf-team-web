@@ -12,6 +12,7 @@
 	import BookTextIcon from '@lucide/svelte/icons/book-text';
 	import TrophyIcon from '@lucide/svelte/icons/trophy';
 	import UsersIcon from '@lucide/svelte/icons/users';
+	import HelpCircleIcon from '@lucide/svelte/icons/help-circle';
 	import { ModeWatcher, toggleMode } from 'mode-watcher';
 	import { navigationMenuTriggerStyle } from '$lib/components/ui/navigation-menu/navigation-menu-trigger.svelte';
 
@@ -25,6 +26,7 @@
 		{ title: '首頁', href: '/', icon: HouseIcon },
 		{ title: '最新消息', href: '/news', icon: NewspaperIcon },
 		{ title: '規範', href: '/rules', icon: BookTextIcon },
+		{ title: 'FAQ', href: '/faq', icon: HelpCircleIcon },
 		{ title: '榮譽榜', href: '/hall-of-fame', icon: TrophyIcon },
 		{ title: '管理團隊', href: '/team', icon: UsersIcon }
 	];
@@ -206,7 +208,7 @@
 						{footerBrandText}
 					</span>
 				</div>
-				<p class="text-xs leading-relaxed text-foreground/70">與我們一起探索無限可能，打造充滿活力的技術社群。</p>
+				<p class="text-xs leading-relaxed text-foreground/80">與我們一起探索無限可能，打造充滿活力的技術社群。</p>
 			</div>
 
 			<!-- 快速導航 1 -->
@@ -214,18 +216,23 @@
 				<h3 class="text-sm font-semibold text-foreground/90">產品</h3>
 				<ul class="flex flex-col gap-2">
 					<li>
-						<a href="/" class="text-xs text-foreground/70 hover:text-foreground/90 transition-colors"
+						<a href="/" class="text-xs text-foreground/80 hover:text-foreground/90 transition-colors"
 							>首頁</a
 						>
 					</li>
 					<li>
-						<a href="/news" class="text-xs text-foreground/70 hover:text-foreground/90 transition-colors"
+						<a href="/news" class="text-xs text-foreground/80 hover:text-foreground/90 transition-colors"
 							>最新消息</a
 						>
 					</li>
 					<li>
-						<a href="/rules" class="text-xs text-foreground/70 hover:text-foreground/90 transition-colors"
+						<a href="/rules" class="text-xs text-foreground/80 hover:text-foreground/90 transition-colors"
 							>規範</a
+						>
+					</li>
+					<li>
+						<a href="/faq" class="text-xs text-foreground/80 hover:text-foreground/90 transition-colors"
+							>FAQ</a
 						>
 					</li>
 				</ul>
@@ -236,17 +243,17 @@
 				<h3 class="text-sm font-semibold text-foreground/90">社群</h3>
 				<ul class="flex flex-col gap-2">
 					<li>
-						<a href="/hall-of-fame" class="text-xs text-foreground/70 hover:text-foreground/90 transition-colors"
+						<a href="/hall-of-fame" class="text-xs text-foreground/80 hover:text-foreground/90 transition-colors"
 							>榮譽榜</a
 						>
 					</li>
 					<li>
-						<a href="/team" class="text-xs text-foreground/70 hover:text-foreground/90 transition-colors"
+						<a href="/team" class="text-xs text-foreground/80 hover:text-foreground/90 transition-colors"
 							>管理團隊</a
 						>
 					</li>
 					<li>
-						<a href="mailto:contact@yfteam.com" class="text-xs text-foreground/70 hover:text-foreground/90 transition-colors"
+						<a href="mailto:yf.george320@gmail.com" class="text-xs text-foreground/80 hover:text-foreground/90 transition-colors"
 							>聯絡我們</a
 						>
 					</li>
@@ -257,13 +264,13 @@
 			<div class="flex flex-col gap-3">
 				<h3 class="text-sm font-semibold text-foreground/90">聯繫</h3>
 				<ul class="flex flex-col gap-2">
-					<li class="text-xs text-foreground/70">
-						<a href="mailto:contact@yfteam.com" class="hover:text-foreground/90 transition-colors"
-							>contact@yfteam.com</a
+					<li class="text-xs text-foreground/80">
+						<a href="mailto:yf.george320@gmail.com" class="hover:text-foreground/90 transition-colors"
+							>yf.george320@gmail.com</a
 						>
 					</li>
 					<li>
-						<a href="https://discord.gg/WtmxxKmH4Z" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-xs text-foreground/70 hover:text-foreground/90 transition-colors"
+						<a href="https://discord.gg/WtmxxKmH4Z" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-xs text-foreground/80 hover:text-foreground/90 transition-colors"
 							>加入 Discord 社群</a
 						>
 					</li>
@@ -276,18 +283,18 @@
 
 		<!-- 底部 -->
 		<div class="flex flex-col items-center justify-between gap-4 md:flex-row">
-			<p class="text-xs text-foreground/60">
+			<p class="text-xs text-foreground/75">
 				© 2024-2026 YF_Team. 保留所有權利。
 			</p>
 			<div class="flex gap-4">
-				<button class="text-xs text-foreground/60 hover:text-foreground/90 transition-colors"
-					>隱私政策</button
+				<a href="/privacy-policy" class="text-xs text-foreground/75 hover:text-foreground/90 transition-colors"
+					>隱私政策</a
 				>
-				<button class="text-xs text-foreground/60 hover:text-foreground/90 transition-colors"
-					>使用條款</button
+				<a href="/terms-of-service" class="text-xs text-foreground/75 hover:text-foreground/90 transition-colors"
+					>使用條款</a
 				>
-				<button class="text-xs text-foreground/60 hover:text-foreground/90 transition-colors"
-					>網頁地圖</button
+				<a href="/sitemap" class="text-xs text-foreground/75 hover:text-foreground/90 transition-colors"
+					>網頁地圖</a
 				>
 			</div>
 		</div>
