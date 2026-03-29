@@ -5,7 +5,7 @@
 		{ order: 1, name: '掠奪狂熱', discord: 'haisha_y', joinedAt: '現任', tags: '大隊長' },
 		{ order: 2, name: '小蘋果', discord: 'xiaopingg4976', joinedAt: '現任', tags: '隊長' },
 		{ order: 3, name: '武藤油膩', discord: 'qwqeee', joinedAt: '現任', tags: '隊長' },
-		{ order: 4, name: '西瓜', discord: '西瓜', joinedAt: '現任', tags: '隊長' },
+		{ order: 4, name: '西瓜', discord: 'gold_waterm3lon', joinedAt: '現任', tags: '隊長' },
 		{ order: 5, name: '恨群主建模怪、帥潮', discord: 'itznotkevin', joinedAt: '現任', tags: '隊長' },
 		{ order: 6, name: 'Porn George', discord: 'yf_george', joinedAt: '現任', tags: '隊長' },
 		{ order: 7, name: 'jerry lin', discord: 'linjerryfish', joinedAt: '現任', tags: '隊長' },
@@ -13,7 +13,12 @@
 	];
 
 	const captain = teamMembers.find((member) => member.tags.includes('大隊長'));
-	const leaders = teamMembers.filter((member) => member.tags.includes('隊長'));
+	const leaders = teamMembers.filter((member) =>
+		member.tags
+			.split(';')
+			.map((tag) => tag.trim())
+			.includes('隊長')
+	);
 </script>
 
 <section class="px-4 pb-14 pt-6 md:pb-22 md:pt-10">
@@ -35,7 +40,7 @@
 
 		{#if captain}
 			<section class="rounded-3xl border bg-background/68 p-6 md:p-7">
-				<div class="flex flex-col gap-4 rounded-2xl border bg-background/84 p-5 md:flex-row md:items-center md:justify-between">
+				<div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
 					<div class="flex items-center gap-3">
 						<div class="inline-flex size-10 items-center justify-center rounded-xl bg-primary/14 text-primary">
 							<CrownIcon class="size-5" />

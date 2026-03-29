@@ -17,7 +17,6 @@
 		{
 			heading: '社群資訊',
 			links: [
-				{ title: '榮譽榜', href: '/hall-of-fame', description: '成員名單與榮譽紀錄。' },
 				{ title: '管理團隊', href: '/team', description: '管理團隊資訊與角色介紹。' },
 				{ title: 'FAQ', href: '/faq', description: '常見問題與成員專區說明。' }
 			]

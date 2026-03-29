@@ -10,7 +10,6 @@
 	import HouseIcon from '@lucide/svelte/icons/house';
 	import NewspaperIcon from '@lucide/svelte/icons/newspaper';
 	import BookTextIcon from '@lucide/svelte/icons/book-text';
-	import TrophyIcon from '@lucide/svelte/icons/trophy';
 	import UsersIcon from '@lucide/svelte/icons/users';
 	import HelpCircleIcon from '@lucide/svelte/icons/help-circle';
 	import { ModeWatcher, toggleMode } from 'mode-watcher';
@@ -27,7 +26,6 @@
 		{ title: '最新消息', href: '/news', icon: NewspaperIcon },
 		{ title: '規範', href: '/rules', icon: BookTextIcon },
 		{ title: 'FAQ', href: '/faq', icon: HelpCircleIcon },
-		{ title: '榮譽榜', href: '/hall-of-fame', icon: TrophyIcon },
 		{ title: '管理團隊', href: '/team', icon: UsersIcon }
 	];
 
@@ -116,6 +114,7 @@
 
 <div class="app-bg pointer-events-none fixed inset-0 -z-10"></div>
 
+<div class="min-h-dvh flex flex-col">
 <header
 	class="theme-transition bg-background/85 supports-backdrop-filter:bg-background/65 sticky top-0 z-40 border-b backdrop-blur-xl"
 	class:nav-switching={Boolean(navigating.to)}
@@ -185,7 +184,7 @@
 	</div>
 </header>
 
-<main class="theme-transition mx-auto w-full max-w-6xl px-4 py-8">
+<main class="theme-transition mx-auto flex-1 w-full max-w-6xl px-4 py-8">
 	{@render children()}
 </main>
 
@@ -243,11 +242,6 @@
 				<h3 class="text-sm font-semibold text-foreground/90">社群</h3>
 				<ul class="flex flex-col gap-2">
 					<li>
-						<a href="/hall-of-fame" class="text-xs text-foreground/80 hover:text-foreground/90 transition-colors"
-							>榮譽榜</a
-						>
-					</li>
-					<li>
 						<a href="/team" class="text-xs text-foreground/80 hover:text-foreground/90 transition-colors"
 							>管理團隊</a
 						>
@@ -300,6 +294,7 @@
 		</div>
 	</div>
 </footer>
+</div>
 
 <style>
 	.app-bg {

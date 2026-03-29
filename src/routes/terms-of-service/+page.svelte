@@ -15,7 +15,7 @@
 	<div class="space-y-4 rounded-2xl border bg-background/70 p-5 md:p-7">
 		<h2 class="text-xl font-semibold md:text-2xl">1. 服務說明</h2>
 		<p class="text-muted-foreground leading-relaxed">
-			本網站提供社群公告、規範資訊、榮譽榜與團隊相關內容。站內功能與內容可能依營運需求調整、更新或下架，恕不另行個別通知。
+			本網站提供社群公告、規範資訊、FAQ 與團隊相關內容。站內功能與內容可能依營運需求調整、更新或下架，恕不另行個別通知。
 		</p>
 	</div>
 

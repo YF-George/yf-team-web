@@ -2,7 +2,6 @@
 	import { onMount } from 'svelte';
 	import BellIcon from '@lucide/svelte/icons/bell';
 	import ShieldIcon from '@lucide/svelte/icons/shield';
-	import TrophyIcon from '@lucide/svelte/icons/trophy';
 	import UsersIcon from '@lucide/svelte/icons/users';
 
 	const HERO_BRAND_TARGET = 'YF_Team';
@@ -31,12 +30,12 @@
 
 	let heroBrandText = $state(HERO_BRAND_TARGET);
 	let heroFadeProgress = $state(0);
-	let messagePanelOpacity = $state(1);
-	let messagePanelTranslateY = $state(0);
+	let messageBlockOpacity = $state(1);
+	let messageBlockTranslateY = $state(0);
 	let leadershipHeadingOpacity = $state(1);
 	let leadershipHeadingTranslateY = $state(0);
 	let stackCardProgresses = $state<number[]>(stackCards.map(() => 0));
-	let messagePanelEl: HTMLElement | null = null;
+	let messageBlockEl: HTMLElement | null = null;
 	let leadershipSectionEl: HTMLElement | null = null;
 
 	const getHeroOpacity = () => Math.max(0, 1 - heroFadeProgress);
@@ -65,16 +64,16 @@
 		);
 	};
 
-	const updateMessagePanelFade = () => {
-		if (typeof window === 'undefined' || !messagePanelEl) return;
+	const updateMessageBlockFade = () => {
+		if (typeof window === 'undefined' || !messageBlockEl) return;
 
-		const rect = messagePanelEl.getBoundingClientRect();
-		const start = window.innerHeight >= 768 ? window.innerHeight * 0.7 : window.innerHeight * 0.66;
-		const fadeDistance = window.innerHeight >= 768 ? window.innerHeight * 0.24 : window.innerHeight * 0.2;
+		const rect = messageBlockEl.getBoundingClientRect();
+		const start = window.innerHeight >= 768 ? window.innerHeight * 0.28 : window.innerHeight * 0.24;
+		const fadeDistance = window.innerHeight >= 768 ? window.innerHeight * 0.7 : window.innerHeight * 0.58;
 		const progress = Math.min(Math.max((start - rect.top) / fadeDistance, 0), 1);
 
-		messagePanelOpacity = 1 - progress;
-		messagePanelTranslateY = -12 * progress;
+		messageBlockOpacity = 1 - progress;
+		messageBlockTranslateY = -10 * progress;
 	};
 
 	const getStackCardStyle = (index: number) => {
@@ -154,7 +153,7 @@
 		const stop = runHeroScramble();
 		const handleViewportChange = () => {
 			updateHeroFade();
-			updateMessagePanelFade();
+			updateMessageBlockFade();
 			updateLeadershipHeadingFade();
 		};
 
@@ -194,15 +193,17 @@
 
 <section class="relative z-10 px-4 pb-14 pt-8 md:pb-24 md:pt-16">
 	<div class="mx-auto w-full max-w-7xl">
-		<article use:revealOnScroll data-delay="60" class="reveal-on-scroll relative isolate overflow-hidden rounded-[2.75rem] border border-white/40 bg-[linear-gradient(140deg,color-mix(in_oklab,var(--background)_92%,transparent),color-mix(in_oklab,var(--primary)_6%,var(--background)))] px-6 py-9 shadow-[0_30px_90px_-46px_color-mix(in_oklab,var(--foreground)_65%,transparent)] backdrop-blur-sm md:px-14 md:py-16">
+		<article
+			bind:this={messageBlockEl}
+			use:revealOnScroll
+			data-delay="60"
+			class="reveal-on-scroll relative isolate overflow-hidden rounded-[2.75rem] border border-white/40 bg-[linear-gradient(140deg,color-mix(in_oklab,var(--background)_92%,transparent),color-mix(in_oklab,var(--primary)_6%,var(--background)))] px-6 py-9 shadow-[0_30px_90px_-46px_color-mix(in_oklab,var(--foreground)_65%,transparent)] backdrop-blur-sm transition-[opacity,transform] duration-500 md:px-14 md:py-16"
+			style={`opacity: ${messageBlockOpacity}; transform: translateY(${messageBlockTranslateY}px);`}
+		>
 			<div class="pointer-events-none absolute inset-y-0 left-0 w-[40%] bg-linear-to-r from-primary/12 via-primary/5 to-transparent"></div>
 			<div class="pointer-events-none absolute -right-14 top-12 h-44 w-44 rounded-full bg-primary/10 blur-3xl"></div>
 			<div class="relative grid gap-10 md:grid-cols-[260px_minmax(0,1fr)] md:gap-16">
-				<aside
-					bind:this={messagePanelEl}
-					class="flex flex-col justify-between gap-10 border-border/70 border-b pb-10 transition-[opacity,transform] duration-300 md:border-r md:border-b-0 md:pb-0 md:pr-10"
-					style={`opacity: ${messagePanelOpacity}; transform: translateY(${messagePanelTranslateY}px);`}
-				>
+				<aside class="flex flex-col justify-between gap-10 border-border/70 border-b pb-10 md:border-r md:border-b-0 md:pb-0 md:pr-10">
 					<div class="space-y-6">
 						<p class="text-foreground/84 text-[11px] font-semibold tracking-[0.32em] uppercase md:text-xs">YF_Team Message</p>
 						<p class="text-foreground/84 text-xs leading-relaxed md:text-lg">給每一個走得很遠、也曾經很累的人。</p>
@@ -314,15 +315,7 @@
 						<h2 class="mt-2 [font-family:var(--font-display)] text-lg font-semibold md:text-xl">規範</h2>
 						<p class="text-foreground/80 mt-2 text-xs md:text-sm">查看社群行為準則、活動參與與投稿規範。</p>
 					</a>
-					<a href="/hall-of-fame" use:revealOnScroll data-delay="340" class="reveal-on-scroll group md:col-span-2 rounded-3xl border bg-background/62 p-5 transition hover:bg-background/82">
-						<div class="inline-flex items-center justify-center size-9 rounded-lg bg-primary/15 mb-2.5">
-							<TrophyIcon class="size-4 text-primary" />
-						</div>
-						<p class="text-primary text-xs font-semibold tracking-[0.15em]">CULTURE</p>
-						<h2 class="mt-2 [font-family:var(--font-display)] text-lg font-semibold md:text-xl">榮譽榜</h2>
-						<p class="text-foreground/80 mt-2 text-xs md:text-sm">看見努力的價值，讓文化被記住。</p>
-					</a>
-					<a href="/team" use:revealOnScroll data-delay="400" class="reveal-on-scroll group md:col-span-1 rounded-3xl border bg-primary/13 p-5 transition hover:bg-primary/20">
+					<a href="/team" use:revealOnScroll data-delay="340" class="reveal-on-scroll group md:col-span-3 rounded-3xl border bg-primary/13 p-5 transition hover:bg-primary/20">
 						<div class="inline-flex items-center justify-center size-9 rounded-lg bg-primary/15 mb-2.5">
 							<UsersIcon class="size-4 text-primary" />
 						</div>
