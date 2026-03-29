@@ -1,15 +1,18 @@
 <script lang="ts">
 	import CrownIcon from '@lucide/svelte/icons/crown';
+	import UsersIcon from '@lucide/svelte/icons/users';
+	import UserRoundCheckIcon from '@lucide/svelte/icons/user-round-check';
+	import AtSignIcon from '@lucide/svelte/icons/at-sign';
+	import CalendarClockIcon from '@lucide/svelte/icons/calendar-clock';
 
 	const teamMembers: Array<{ order: number; name: string; discord: string; joinedAt: string; tags: string }> = [
 		{ order: 1, name: '掠奪狂熱', discord: 'haisha_y', joinedAt: '現任', tags: '大隊長' },
 		{ order: 2, name: '小蘋果', discord: 'xiaopingg4976', joinedAt: '現任', tags: '隊長' },
-		{ order: 3, name: '武藤油膩', discord: 'qwqeee', joinedAt: '現任', tags: '隊長' },
-		{ order: 4, name: '西瓜', discord: 'gold_waterm3lon', joinedAt: '現任', tags: '隊長' },
-		{ order: 5, name: '恨群主建模怪、帥潮', discord: 'itznotkevin', joinedAt: '現任', tags: '隊長' },
-		{ order: 6, name: 'Porn George', discord: 'yf_george', joinedAt: '現任', tags: '隊長' },
-		{ order: 7, name: 'jerry lin', discord: 'linjerryfish', joinedAt: '現任', tags: '隊長' },
-		{ order: 8, name: '狂熱前女友(烤狗肉)', discord: 'fachi1126', joinedAt: '現任', tags: '隊長' }
+		{ order: 3, name: '西瓜', discord: 'gold_waterm3lon', joinedAt: '現任', tags: '隊長' },
+		{ order: 4, name: '恨群主建模怪、帥潮', discord: 'itznotkevin', joinedAt: '現任', tags: '隊長' },
+		{ order: 5, name: 'Porn George', discord: 'yf_george', joinedAt: '現任', tags: '隊長' },
+		{ order: 6, name: 'jerry lin', discord: 'linjerryfish', joinedAt: '現任', tags: '隊長' },
+		{ order: 7, name: '狂熱前女友(烤狗肉)', discord: 'fachi1126', joinedAt: '現任', tags: '隊長' }
 	];
 
 	const captain = teamMembers.find((member) => member.tags.includes('大隊長'));
@@ -30,7 +33,10 @@
 			<div class="relative">
 				<div class="space-y-5 md:space-y-6">
 					<p class="text-foreground/86 text-xs font-semibold tracking-[0.32em] uppercase">YF_Team Management</p>
-					<h1 class="[font-family:var(--font-display)] text-4xl leading-tight font-bold tracking-tight md:text-6xl">管理團隊</h1>
+					<h1 class="[font-family:var(--font-display)] inline-flex items-center gap-3 text-4xl leading-tight font-bold tracking-tight md:text-6xl">
+						<UsersIcon class="size-8 text-primary md:size-11" />
+						管理團隊
+					</h1>
 					<p class="text-foreground/90 max-w-3xl text-base leading-relaxed md:text-lg">
 						每位管理者都有不同的位置與責任，但目標一致：讓社群維持秩序、溫度與可持續成長。
 					</p>
@@ -58,7 +64,10 @@
 
 		<section class="rounded-3xl border bg-background/68 p-6 md:p-7">
 			<div class="flex items-end justify-between gap-4">
-				<h2 class="[font-family:var(--font-display)] text-2xl font-bold tracking-tight md:text-3xl">隊長名單 (目前 {leaders.length} 位)</h2>
+				<h2 class="[font-family:var(--font-display)] inline-flex items-center gap-2.5 text-2xl font-bold tracking-tight md:text-3xl">
+					<UserRoundCheckIcon class="size-6 text-primary md:size-7" />
+					隊長名單 (目前 {leaders.length} 位)
+				</h2>
 				<p class="text-foreground/80 text-xs tracking-[0.16em] uppercase">Team Members</p>
 			</div>
 
@@ -74,9 +83,15 @@
 								<div>
 									<p class="text-primary text-xs font-semibold tracking-[0.18em] uppercase">#{member.order}</p>
 									<h3 class="mt-2 text-base font-semibold">{member.name}</h3>
-									<p class="text-foreground/80 mt-1 text-xs">@{member.discord}</p>
+									<p class="text-foreground/80 mt-1 inline-flex items-center gap-1.5 text-xs">
+										<AtSignIcon class="size-3.5 text-primary/80" />
+										{member.discord}
+									</p>
 								</div>
-								<p class="text-foreground/78 text-xs">{member.joinedAt}</p>
+								<p class="text-foreground/78 inline-flex items-center gap-1.5 text-xs">
+									<CalendarClockIcon class="size-3.5 text-primary/80" />
+									{member.joinedAt}
+								</p>
 							</div>
 
 							<div class="mt-4 flex flex-wrap gap-2">
