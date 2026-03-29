@@ -1,30 +1,35 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import type { Component } from 'svelte';
 	import { navigating, page } from '$app/state';
 	import './layout.css';
 	import * as NavigationMenu from '$lib/components/ui/navigation-menu/index.js';
 	import { cn } from '$lib/utils.js';
-	import { IsMobile } from '$lib/components/hooks/is-mobile.svelte.js';
 	import SunIcon from '@lucide/svelte/icons/sun';
 	import MoonIcon from '@lucide/svelte/icons/moon';
+	import HouseIcon from '@lucide/svelte/icons/house';
+	import NewspaperIcon from '@lucide/svelte/icons/newspaper';
+	import BookTextIcon from '@lucide/svelte/icons/book-text';
+	import TrophyIcon from '@lucide/svelte/icons/trophy';
+	import UsersIcon from '@lucide/svelte/icons/users';
 	import { ModeWatcher, toggleMode } from 'mode-watcher';
 	import { navigationMenuTriggerStyle } from '$lib/components/ui/navigation-menu/navigation-menu-trigger.svelte';
 
 	type NavItem = {
 		title: string;
 		href: string;
+		icon: Component;
 	};
 
 	const navItems: NavItem[] = [
-		{ title: '首頁', href: '/' },
-		{ title: '最新消息', href: '/news' },
-		{ title: '規範', href: '/highlights' },
-		{ title: '榮譽榜', href: '/hall-of-fame' },
-		{ title: '管理團隊', href: '/team' }
+		{ title: '首頁', href: '/', icon: HouseIcon },
+		{ title: '最新消息', href: '/news', icon: NewspaperIcon },
+		{ title: '規範', href: '/highlights', icon: BookTextIcon },
+		{ title: '榮譽榜', href: '/hall-of-fame', icon: TrophyIcon },
+		{ title: '管理團隊', href: '/team', icon: UsersIcon }
 	];
 
 	let { children } = $props();
-	const isMobile = new IsMobile();
 
 	const isActive = (href: string) => {
 		const pathname = page.url.pathname;
@@ -116,23 +121,23 @@
 	<div
 		class="from-primary/12 via-primary/3 to-primary/12 pointer-events-none absolute inset-x-0 top-0 h-0.75 bg-linear-to-r"
 	></div>
-	<div class="mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-4 py-3">
-		<a href="/" class="relative inline-flex items-center gap-2 text-base font-semibold tracking-tight">
+	<div class="mx-auto flex w-full max-w-6xl items-center justify-between gap-2 px-4 py-3 md:gap-4">
+		<a href="/" class="relative inline-flex shrink-0 items-center gap-2 text-base font-semibold tracking-tight">
 			<span
 				class="inline-flex size-8 items-center justify-center rounded-xl bg-black/70 p-1 ring-1 ring-black/15 shadow-sm"
 			>
 				<img src="/LOGO.svg" alt="YF_Team Logo" class="size-full" />
 			</span>
 			<span
-				class="from-primary via-foreground to-primary [font-family:var(--font-display)] bg-linear-to-r bg-clip-text text-transparent"
+				class="from-primary via-foreground to-primary [font-family:var(--font-display)] hidden bg-linear-to-r bg-clip-text text-transparent sm:inline"
 			>
 				{headerBrandText}
 			</span>
 		</a>
 
-		<div class="flex items-center gap-2">
-			<div class="no-scrollbar overflow-x-auto">
-				<NavigationMenu.Root viewport={isMobile.current}>
+		<div class="ml-auto flex min-w-0 items-center gap-2">
+			<div class="no-scrollbar min-w-0 overflow-x-auto">
+				<NavigationMenu.Root viewport={false}>
 					<NavigationMenu.List
 						class="nav-list bg-muted/35 ring-border/70 inline-flex flex-nowrap items-center gap-1 rounded-xl p-1 ring-1 shadow-[0_10px_25px_-20px_color-mix(in_oklab,var(--foreground)_75%,transparent)]"
 					>
@@ -142,13 +147,16 @@
 									href={item.href}
 									class={cn(
 										navigationMenuTriggerStyle(),
-										'nav-link relative rounded-xl px-3 text-xs font-medium transition-all duration-300 ease-out md:text-sm',
+										'nav-link relative inline-flex h-9 min-w-9 items-center justify-center rounded-xl px-2 text-xs font-medium transition-all duration-300 ease-out md:px-3 md:text-sm',
 										isActive(item.href)
 											? 'bg-primary text-primary-foreground shadow-[0_0_0_1px_hsl(var(--background))_inset,0_10px_28px_-14px_hsl(var(--foreground))]'
 											: 'bg-transparent text-foreground/80 hover:-translate-y-0.5 hover:text-foreground'
 									)}
+									aria-label={item.title}
+									title={item.title}
 								>
-									{item.title}
+									<item.icon class="size-4 md:hidden" aria-hidden="true" />
+									<span class="hidden md:inline">{item.title}</span>
 								</NavigationMenu.Link>
 							</NavigationMenu.Item>
 						{/each}

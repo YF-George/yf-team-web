@@ -9,31 +9,27 @@
 			kicker: '01 / LEADERSHIP',
 			title: '掠奪狂熱',
 			description:
-				'',
-			cta: '查看管理團隊',
-			href: '/team'
+				''
 		},
 		{
 			kicker: '02 / OPERATIONS',
 			title: '喬治',
 			description:
-				'所謂家人，是那些看過你所有狼狽，卻依然願意為你遞上一盞燈的人。',
-			cta: '查看管理團隊',
-			href: '/team'
+				'所謂家人，是那些看過你所有狼狽，卻依然願意為你遞上一盞燈的人。'
 		},
 		{
 			kicker: '03 / CULTURE',
 			title: '待定',
 			description:
-				'',
-			cta: '認識管理團隊',
-			href: '/team'
+				''
 		}
 	];
 
 	let heroBrandText = $state(HERO_BRAND_TARGET);
 	let heroFadeProgress = $state(0);
 	let leadershipHeadingOpacity = $state(1);
+	let leadershipHeadingTranslateY = $state(0);
+	let stackCardProgresses = $state<number[]>(stackCards.map(() => 0));
 	let leadershipSectionEl: HTMLElement | null = null;
 
 	const getHeroOpacity = () => Math.max(0, 1 - heroFadeProgress);
@@ -49,9 +45,24 @@
 
 		const rect = leadershipSectionEl.getBoundingClientRect();
 		const stickyStart = window.innerWidth >= 768 ? 96 : 80;
-		const fadeDistance = window.innerHeight * 0.32;
-		const progress = Math.max(0, (stickyStart - rect.top) / fadeDistance);
-		leadershipHeadingOpacity = Math.max(0, 1 - Math.min(progress, 1));
+		const fadeDistance = window.innerWidth >= 768 ? window.innerHeight * 0.28 : window.innerHeight * 0.2;
+		const progress = Math.min(Math.max((stickyStart - rect.top) / fadeDistance, 0), 1);
+		leadershipHeadingOpacity = 1 - progress;
+		leadershipHeadingTranslateY = -14 * progress;
+
+		const cardFadeDistance = window.innerWidth >= 768 ? window.innerHeight * 0.24 : window.innerHeight * 0.18;
+		const cardStep = window.innerWidth >= 768 ? 0.55 : 0.46;
+		const cardBaseProgress = (stickyStart - rect.top) / cardFadeDistance;
+		stackCardProgresses = stackCards.map((_, index) =>
+			Math.min(Math.max(cardBaseProgress - index * cardStep, 0), 1)
+		);
+	};
+
+	const getStackCardStyle = (index: number) => {
+		const progress = stackCardProgresses[index] ?? 0;
+		const baseScale = 1 - index * 0.025;
+		const animatedScale = Math.max(0.88, baseScale - progress * 0.04);
+		return `top: calc(var(--stack-base, 8.5rem) + ${index * 1.6}rem); z-index: ${30 - index}; transform: translateY(${-12 * progress}px) scale(${animatedScale}); opacity: ${1 - progress}; filter: blur(${progress * 1.6}px);`;
 	};
 
 	const randomScrambleChar = () => SCRAMBLE_CHARS[Math.floor(Math.random() * SCRAMBLE_CHARS.length)] ?? 'X';
@@ -139,7 +150,12 @@
 	});
 </script>
 
-<div class="home-anim">
+<div
+	class="home-anim no-copy"
+	oncopy={(event) => event.preventDefault()}
+	oncut={(event) => event.preventDefault()}
+	onselectstart={(event) => event.preventDefault()}
+>
 <section class="hero-top sticky top-0 z-0 isolate flex h-[calc(100dvh-7rem)] w-full items-center justify-center px-4">
 	<div class="pointer-events-none absolute inset-0 opacity-70" style={`opacity: ${0.7 * getHeroOpacity()};`}>
 		<div class="float-slow absolute -top-24 left-1/2 h-64 w-64 -translate-x-1/2 rounded-full bg-primary/20 blur-3xl"></div>
@@ -147,47 +163,43 @@
 	</div>
 
 	<div class="hero-enter relative text-center" style={`opacity: ${getHeroOpacity()};`}>
-		<p class="text-foreground/78 text-[10px] font-semibold tracking-[0.36em] uppercase md:text-xs" style="--text-delay: 60ms;">YOUTH FORGE COLLECTIVE</p>
-		<h1 class="mt-4 [font-family:var(--font-display)] text-6xl leading-none font-bold tracking-[-0.03em] md:text-8xl lg:text-9xl">
+		<p class="text-foreground/78 text-[9px] font-semibold tracking-[0.34em] uppercase md:text-xs" style="--text-delay: 60ms;">YOUTH FORGE COLLECTIVE</p>
+		<h1 class="mt-4 [font-family:var(--font-display)] text-[clamp(2.45rem,14vw,5.6rem)] leading-none font-bold tracking-[-0.03em] md:text-8xl lg:text-9xl">
 			<span class="text-foreground">{heroBrandText.slice(0, 2)}</span><span class="text-primary">{heroBrandText.slice(2, 3)}</span><span class="text-foreground">{heroBrandText.slice(3)}</span>
 		</h1>
-		<p class="text-foreground/70 mt-5 text-sm tracking-[0.14em] uppercase md:text-base" style="--text-delay: 180ms;">Built by people, not by noise</p>
+		<p class="text-foreground/70 mt-5 text-xs tracking-[0.13em] uppercase md:text-base" style="--text-delay: 180ms;">Built by people, not by noise</p>
 	</div>
-	<p class="scroll-cue text-foreground/72 absolute bottom-8 text-[10px] tracking-[0.28em] uppercase md:text-xs" style={`opacity: ${getHeroOpacity()}; --text-delay: 280ms;`}>Scroll Down</p>
+	<p class="scroll-cue text-foreground/72 absolute bottom-8 text-[9px] tracking-[0.24em] uppercase md:text-xs" style={`opacity: ${getHeroOpacity()}; --text-delay: 280ms;`}>Scroll Down</p>
 </section>
 
 <section class="relative z-10 px-4 pb-14 pt-8 md:pb-24 md:pt-16">
 	<div class="mx-auto w-full max-w-7xl">
-		<article use:revealOnScroll data-delay="60" class="reveal-on-scroll relative isolate overflow-hidden rounded-[2.75rem] border border-white/40 bg-[linear-gradient(140deg,color-mix(in_oklab,var(--background)_92%,transparent),color-mix(in_oklab,var(--primary)_6%,var(--background)))] px-7 py-10 shadow-[0_30px_90px_-46px_color-mix(in_oklab,var(--foreground)_65%,transparent)] backdrop-blur-sm md:px-14 md:py-16">
+		<article use:revealOnScroll data-delay="60" class="reveal-on-scroll relative isolate overflow-hidden rounded-[2.75rem] border border-white/40 bg-[linear-gradient(140deg,color-mix(in_oklab,var(--background)_92%,transparent),color-mix(in_oklab,var(--primary)_6%,var(--background)))] px-6 py-9 shadow-[0_30px_90px_-46px_color-mix(in_oklab,var(--foreground)_65%,transparent)] backdrop-blur-sm md:px-14 md:py-16">
 			<div class="pointer-events-none absolute inset-y-0 left-0 w-[40%] bg-linear-to-r from-primary/12 via-primary/5 to-transparent"></div>
 			<div class="pointer-events-none absolute -right-14 top-12 h-44 w-44 rounded-full bg-primary/10 blur-3xl"></div>
 			<div class="relative grid gap-10 md:grid-cols-[260px_minmax(0,1fr)] md:gap-16">
 				<aside class="flex flex-col justify-between gap-10 border-border/70 border-b pb-10 md:border-r md:border-b-0 md:pb-0 md:pr-10">
 					<div class="space-y-6">
 						<p class="text-foreground/84 text-[11px] font-semibold tracking-[0.32em] uppercase md:text-xs">YF_Team Message</p>
-						<p class="text-foreground/84 text-base leading-relaxed md:text-lg">給每一個走得很遠、也曾經很累的人。</p>
+						<p class="text-foreground/84 text-xs leading-relaxed md:text-lg">給每一個走得很遠、也曾經很累的人。</p>
 						<a
 							href="https://discord.gg/WtmxxKmH4Z"
 							target="_blank"
 							rel="noopener noreferrer"
-							class="border-primary/55 bg-background/88 text-foreground hover:bg-primary/14 inline-flex items-center rounded-full border px-5 py-2.5 text-sm font-semibold tracking-wide transition"
+							class="border-primary/55 bg-background/88 text-foreground hover:bg-primary/14 inline-flex items-center rounded-full border px-4 py-2 text-xs font-semibold tracking-wide transition md:px-5 md:py-2.5 md:text-sm"
 						>
 							加入 DC
 						</a>
-					</div>
-					<div class="flex flex-wrap gap-3">
-						<span class="text-foreground/86 bg-background/76 rounded-full border px-4 py-1.5 text-sm">陪伴</span>
-						<span class="text-foreground/86 bg-background/76 rounded-full border px-4 py-1.5 text-sm">家人</span>
 					</div>
 				</aside>
 
 				<div class="relative py-1 md:py-2">
 					<p class="text-primary/85 mb-4 text-xs font-semibold tracking-[0.24em] uppercase md:mb-6">Home is here</p>
-					<h2 class="[font-family:var(--font-display)] text-4xl leading-tight font-bold tracking-tight md:text-6xl md:leading-[1.14]">
+					<h2 class="[font-family:var(--font-display)] text-2xl leading-tight font-bold tracking-tight md:text-6xl md:leading-[1.14]">
 						累了就待會，這裡沒那麼多規矩
 						<br class="hidden md:block" />
 					</h2>
-					<p class="text-foreground/92 mt-8 max-w-5xl border-l-2 border-primary/55 pl-6 text-lg leading-relaxed md:mt-10 md:pl-8 md:text-2xl md:leading-relaxed">
+					<p class="text-foreground/92 mt-7 max-w-5xl border-l-2 border-primary/55 pl-5 text-sm leading-relaxed md:mt-10 md:pl-8 md:text-2xl md:leading-relaxed">
 						外面世界很大、走得很累的時候，這裡永遠為你留著一盞燈。我們不只是聚在一起的人，而是彼此生命裡的一份力量。在那些沒人看見的脆弱時刻，是這個家給了我們重新出發的勇氣；我們或許沒有血緣，卻在無數個日常的關心裡，活成了彼此最親的家人。
 					</p>
 				</div>
@@ -202,11 +214,11 @@
 			use:revealOnScroll
 			data-delay="120"
 			class="reveal-on-scroll sticky top-20 z-50 mb-8 flex items-end justify-between gap-4 pt-3 transition-opacity duration-300 md:top-24 md:mb-10 md:pt-4"
-			style={`opacity: ${leadershipHeadingOpacity};`}
+			style={`opacity: ${leadershipHeadingOpacity}; transform: translateY(${leadershipHeadingTranslateY}px);`}
 		>
 			<div>
-				<p class="text-foreground/74 text-[10px] font-semibold tracking-[0.34em] uppercase md:text-xs">Leadership Messages</p>
-				<h3 class="[font-family:var(--font-display)] mt-2 text-3xl font-bold tracking-tight md:text-5xl">燈火下的真心話</h3>
+				<p class="text-foreground/74 text-[9px] font-semibold tracking-[0.32em] uppercase md:text-xs">Leadership Messages</p>
+				<h3 class="[font-family:var(--font-display)] mt-2 text-2xl font-bold tracking-tight md:text-5xl">燈火下的真心話</h3>
 			</div>
 		</div>
 
@@ -214,24 +226,17 @@
 			{#each stackCards as card, index (card.kicker)}
 				<article
 					class="sticky overflow-hidden rounded-[2rem] border border-white/40 bg-[linear-gradient(145deg,color-mix(in_oklab,var(--background)_88%,transparent),color-mix(in_oklab,var(--primary)_9%,var(--background)))] p-6 shadow-[0_28px_80px_-50px_color-mix(in_oklab,var(--foreground)_75%,transparent)] backdrop-blur-sm md:p-8"
-					style={`top: calc(14rem + ${index * 2}rem); z-index: ${30 - index}; transform: scale(${1 - index * 0.025});`}
+					style={getStackCardStyle(index)}
 				>
 					<div class="pointer-events-none absolute -right-14 -top-14 h-36 w-36 rounded-full bg-primary/15 blur-3xl"></div>
 					<div class="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,color-mix(in_oklab,var(--foreground)_5%,transparent)_1px,transparent_1px),linear-gradient(to_bottom,color-mix(in_oklab,var(--foreground)_5%,transparent)_1px,transparent_1px)] bg-size-[34px_34px] opacity-40"></div>
 
-					<div class="relative grid gap-6 md:grid-cols-[1fr_auto] md:items-end">
+					<div class="relative grid gap-6">
 						<div class="space-y-4 md:space-y-5">
 							<p class="text-primary/85 text-[10px] font-semibold tracking-[0.28em] uppercase md:text-xs">{card.kicker}</p>
-							<h4 class="[font-family:var(--font-display)] text-2xl leading-tight font-bold tracking-tight md:text-4xl">{card.title}</h4>
-							<p class="text-foreground/86 max-w-2xl text-sm leading-relaxed md:text-base">{card.description}</p>
+							<h4 class="[font-family:var(--font-display)] text-lg leading-tight font-bold tracking-tight md:text-4xl">{card.title}</h4>
+							<p class="text-foreground/86 max-w-2xl text-xs leading-relaxed md:text-base">{card.description}</p>
 						</div>
-
-						<a
-							href={card.href}
-							class="bg-background/84 hover:bg-muted inline-flex items-center justify-center rounded-full border px-5 py-2.5 text-sm font-semibold transition"
-						>
-							{card.cta}
-						</a>
 					</div>
 				</article>
 			{/each}
@@ -248,18 +253,18 @@
 				<div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
 					<div class="space-y-2">
 						<p class="text-foreground/78 text-[10px] font-semibold tracking-[0.34em] uppercase md:text-xs">Explore YF_Team</p>
-						<h3 class="[font-family:var(--font-display)] text-2xl font-bold tracking-tight md:text-4xl">從這裡開始，找到你的歸屬感</h3>
+						<h3 class="[font-family:var(--font-display)] text-lg font-bold tracking-tight md:text-4xl">從這裡開始，找到你的歸屬感</h3>
 					</div>
 					<div class="flex flex-wrap gap-2">
 						<a
 							href="/news"
-							class="bg-primary text-primary-foreground hover:bg-primary/90 inline-flex items-center rounded-full px-4 py-2.5 text-sm font-semibold shadow-lg shadow-primary/20 transition"
+							class="bg-primary text-primary-foreground hover:bg-primary/90 inline-flex items-center rounded-full px-3.5 py-2 text-xs font-semibold shadow-lg shadow-primary/20 transition md:px-4 md:py-2.5 md:text-sm"
 						>
 							看最新消息
 						</a>
 						<a
 							href="/highlights"
-							class="bg-background/80 hover:bg-muted inline-flex items-center rounded-full border px-4 py-2.5 text-sm font-semibold transition"
+							class="bg-background/80 hover:bg-muted inline-flex items-center rounded-full border px-3.5 py-2 text-xs font-semibold transition md:px-4 md:py-2.5 md:text-sm"
 						>
 							看規範
 						</a>
@@ -269,22 +274,22 @@
 				<div class="grid gap-4 md:grid-cols-6 md:grid-rows-2">
 					<a href="/news" use:revealOnScroll data-delay="220" class="reveal-on-scroll group md:col-span-3 md:row-span-2 rounded-3xl border bg-background/72 p-6 transition hover:bg-background/90">
 						<p class="text-primary text-xs font-semibold tracking-[0.15em]">LATEST</p>
-						<h2 class="mt-3 [font-family:var(--font-display)] text-2xl font-semibold md:text-3xl">最新消息</h2>
-						<p class="text-foreground/80 mt-3 max-w-sm text-sm leading-relaxed md:text-base">公告、制度更新、活動上線資訊一站掌握，第一時間知道社群正在發生什麼。</p>
+						<h2 class="mt-3 [font-family:var(--font-display)] text-lg font-semibold md:text-3xl">最新消息</h2>
+						<p class="text-foreground/80 mt-3 max-w-sm text-xs leading-relaxed md:text-base">公告、制度更新、活動上線資訊一站掌握，第一時間知道社群正在發生什麼。</p>
 					</a>
 					<a href="/highlights" use:revealOnScroll data-delay="280" class="reveal-on-scroll group md:col-span-3 rounded-3xl border bg-background/62 p-5 transition hover:bg-background/82">
 						<p class="text-primary text-xs font-semibold tracking-[0.15em]">MOMENTS</p>
-						<h2 class="mt-2 [font-family:var(--font-display)] text-xl font-semibold">規範</h2>
-						<p class="text-foreground/80 mt-2 text-sm">查看社群行為準則、活動參與與投稿規範。</p>
+						<h2 class="mt-2 [font-family:var(--font-display)] text-lg font-semibold md:text-xl">規範</h2>
+						<p class="text-foreground/80 mt-2 text-xs md:text-sm">查看社群行為準則、活動參與與投稿規範。</p>
 					</a>
 					<a href="/hall-of-fame" use:revealOnScroll data-delay="340" class="reveal-on-scroll group md:col-span-2 rounded-3xl border bg-background/62 p-5 transition hover:bg-background/82">
 						<p class="text-primary text-xs font-semibold tracking-[0.15em]">CULTURE</p>
-						<h2 class="mt-2 [font-family:var(--font-display)] text-xl font-semibold">榮譽榜</h2>
-						<p class="text-foreground/80 mt-2 text-sm">看見努力的價值，讓文化被記住。</p>
+						<h2 class="mt-2 [font-family:var(--font-display)] text-lg font-semibold md:text-xl">榮譽榜</h2>
+						<p class="text-foreground/80 mt-2 text-xs md:text-sm">看見努力的價值，讓文化被記住。</p>
 					</a>
 					<a href="/team" use:revealOnScroll data-delay="400" class="reveal-on-scroll group md:col-span-1 rounded-3xl border bg-primary/13 p-5 transition hover:bg-primary/20">
 						<p class="text-primary text-xs font-semibold tracking-[0.15em]">PEOPLE</p>
-						<h2 class="mt-2 [font-family:var(--font-display)] text-xl font-semibold">管理團隊</h2>
+						<h2 class="mt-2 [font-family:var(--font-display)] text-lg font-semibold md:text-xl">管理團隊</h2>
 					</a>
 				</div>
 			</div>
@@ -294,6 +299,22 @@
 </div>
 
 <style>
+	.home-anim {
+		--stack-base: 8.5rem;
+	}
+
+	.no-copy {
+		user-select: none;
+		-webkit-user-select: none;
+		-webkit-touch-callout: none;
+	}
+
+	@media (min-width: 768px) {
+		.home-anim {
+			--stack-base: 14rem;
+		}
+	}
+
 	.home-anim p {
 		--text-delay: 120ms;
 		animation: textLoadIn 720ms cubic-bezier(0.22, 1, 0.36, 1) both;
