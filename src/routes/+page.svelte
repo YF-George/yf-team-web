@@ -31,9 +31,12 @@
 
 	let heroBrandText = $state(HERO_BRAND_TARGET);
 	let heroFadeProgress = $state(0);
+	let messagePanelOpacity = $state(1);
+	let messagePanelTranslateY = $state(0);
 	let leadershipHeadingOpacity = $state(1);
 	let leadershipHeadingTranslateY = $state(0);
 	let stackCardProgresses = $state<number[]>(stackCards.map(() => 0));
+	let messagePanelEl: HTMLElement | null = null;
 	let leadershipSectionEl: HTMLElement | null = null;
 
 	const getHeroOpacity = () => Math.max(0, 1 - heroFadeProgress);
@@ -60,6 +63,18 @@
 		stackCardProgresses = stackCards.map((_, index) =>
 			Math.min(Math.max(cardBaseProgress - index * cardStep, 0), 1)
 		);
+	};
+
+	const updateMessagePanelFade = () => {
+		if (typeof window === 'undefined' || !messagePanelEl) return;
+
+		const rect = messagePanelEl.getBoundingClientRect();
+		const start = window.innerHeight >= 768 ? window.innerHeight * 0.7 : window.innerHeight * 0.66;
+		const fadeDistance = window.innerHeight >= 768 ? window.innerHeight * 0.24 : window.innerHeight * 0.2;
+		const progress = Math.min(Math.max((start - rect.top) / fadeDistance, 0), 1);
+
+		messagePanelOpacity = 1 - progress;
+		messagePanelTranslateY = -12 * progress;
 	};
 
 	const getStackCardStyle = (index: number) => {
@@ -139,6 +154,7 @@
 		const stop = runHeroScramble();
 		const handleViewportChange = () => {
 			updateHeroFade();
+			updateMessagePanelFade();
 			updateLeadershipHeadingFade();
 		};
 
@@ -182,7 +198,11 @@
 			<div class="pointer-events-none absolute inset-y-0 left-0 w-[40%] bg-linear-to-r from-primary/12 via-primary/5 to-transparent"></div>
 			<div class="pointer-events-none absolute -right-14 top-12 h-44 w-44 rounded-full bg-primary/10 blur-3xl"></div>
 			<div class="relative grid gap-10 md:grid-cols-[260px_minmax(0,1fr)] md:gap-16">
-				<aside class="flex flex-col justify-between gap-10 border-border/70 border-b pb-10 md:border-r md:border-b-0 md:pb-0 md:pr-10">
+				<aside
+					bind:this={messagePanelEl}
+					class="flex flex-col justify-between gap-10 border-border/70 border-b pb-10 transition-[opacity,transform] duration-300 md:border-r md:border-b-0 md:pb-0 md:pr-10"
+					style={`opacity: ${messagePanelOpacity}; transform: translateY(${messagePanelTranslateY}px);`}
+				>
 					<div class="space-y-6">
 						<p class="text-foreground/84 text-[11px] font-semibold tracking-[0.32em] uppercase md:text-xs">YF_Team Message</p>
 						<p class="text-foreground/84 text-xs leading-relaxed md:text-lg">給每一個走得很遠、也曾經很累的人。</p>

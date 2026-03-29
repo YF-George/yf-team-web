@@ -22,7 +22,7 @@
 				<p class="text-foreground/80 text-xs font-semibold tracking-[0.32em] uppercase">YF_Team Honor Board</p>
 				<h1 class="[font-family:var(--font-display)] text-4xl leading-tight font-bold tracking-tight md:text-6xl">榮譽榜: 成員名單</h1>
 				<p class="text-foreground/84 max-w-3xl text-base leading-relaxed md:text-lg">
-					這裡收錄成員排序、顯示名稱、Discord 帳號、加入日期與身份標籤，完整名單從 1 到 87。
+					這裡收錄成員排序、顯示名稱、Discord 帳號、加入日期與身份標籤。
 				</p>
 			</div>
 		</div>
