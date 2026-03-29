@@ -263,7 +263,7 @@
 							看最新消息
 						</a>
 						<a
-							href="/highlights"
+							href="/rules"
 							class="bg-background/80 hover:bg-muted inline-flex items-center rounded-full border px-3.5 py-2 text-xs font-semibold transition md:px-4 md:py-2.5 md:text-sm"
 						>
 							看規範
@@ -277,7 +277,7 @@
 						<h2 class="mt-3 [font-family:var(--font-display)] text-lg font-semibold md:text-3xl">最新消息</h2>
 						<p class="text-foreground/80 mt-3 max-w-sm text-xs leading-relaxed md:text-base">公告、制度更新、活動上線資訊一站掌握，第一時間知道社群正在發生什麼。</p>
 					</a>
-					<a href="/highlights" use:revealOnScroll data-delay="280" class="reveal-on-scroll group md:col-span-3 rounded-3xl border bg-background/62 p-5 transition hover:bg-background/82">
+					<a href="/rules" use:revealOnScroll data-delay="280" class="reveal-on-scroll group md:col-span-3 rounded-3xl border bg-background/62 p-5 transition hover:bg-background/82">
 						<p class="text-primary text-xs font-semibold tracking-[0.15em]">MOMENTS</p>
 						<h2 class="mt-2 [font-family:var(--font-display)] text-lg font-semibold md:text-xl">規範</h2>
 						<p class="text-foreground/80 mt-2 text-xs md:text-sm">查看社群行為準則、活動參與與投稿規範。</p>

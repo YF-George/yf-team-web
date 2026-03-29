@@ -24,7 +24,7 @@
 	const navItems: NavItem[] = [
 		{ title: '首頁', href: '/', icon: HouseIcon },
 		{ title: '最新消息', href: '/news', icon: NewspaperIcon },
-		{ title: '規範', href: '/highlights', icon: BookTextIcon },
+		{ title: '規範', href: '/rules', icon: BookTextIcon },
 		{ title: '榮譽榜', href: '/hall-of-fame', icon: TrophyIcon },
 		{ title: '管理團隊', href: '/team', icon: UsersIcon }
 	];
@@ -224,7 +224,7 @@
 						>
 					</li>
 					<li>
-						<a href="/highlights" class="text-xs text-foreground/70 hover:text-foreground/90 transition-colors"
+						<a href="/rules" class="text-xs text-foreground/70 hover:text-foreground/90 transition-colors"
 							>規範</a
 						>
 					</li>
